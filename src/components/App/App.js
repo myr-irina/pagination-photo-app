@@ -15,6 +15,8 @@ function App() {
   const indexOfLastPhoto = currentPage * photosPerPage;
   const indexOfFirstPhoto = indexOfLastPhoto - photosPerPage;
   const currentPhotos = photos.slice(indexOfFirstPhoto, indexOfLastPhoto);
+  //change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   useEffect(() => {
     axios.get(BASE_URL).then((res) => {
@@ -29,7 +31,11 @@ function App() {
     <div className="container">
       <h1 className="text-primary">My Photos</h1>
       <Photos photos={currentPhotos} loading={loading} />
-      <Pagination photosPerPage={photosPerPage} totalPhotos={photos.length}/>
+      <Pagination
+        photosPerPage={photosPerPage}
+        totalPhotos={photos.length}
+        paginate={paginate}
+      />
     </div>
   );
 }
