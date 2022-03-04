@@ -1,8 +1,14 @@
 import React from "react";
+import CircularProgress from '@mui/material/CircularProgress';
 
 export const Photos = ({ photos, loading }) => {
   if (loading) {
-    return <h2>Loading...</h2>;
+    return (
+      // <CircularProgress animation="border" role="status">
+      //   <span className="sr-only">Loading...</span>
+      // </CircularProgress>
+      <CircularProgress />
+    );
   }
 
   return (

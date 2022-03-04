@@ -1,14 +1,16 @@
 import React from "react";
+import { Pagination, PaginationItem } from "@mui/material";
 
-export const Pagination = ({ photosPerPage, totalPhotos, paginate }) => {
+export const PageNumbers = ({ photosPerPage, totalPhotos, paginate}) => {
   const pageNumbers = [];
 
   for (let i = 1; i <= Math.ceil(totalPhotos / photosPerPage); i++) {
     pageNumbers.push(i);
   }
+
   return (
-    <nav>
-      <ul className="Pagination">
+    <Pagination count={totalPhotos}>
+      <PaginationItem>
         {pageNumbers.map((number) => {
           return (
             <>
@@ -16,14 +18,15 @@ export const Pagination = ({ photosPerPage, totalPhotos, paginate }) => {
                 <a
                   onClick={() => paginate(number)}
                   href="!#"
-                  className="page-link">
+                  className="page-link"
+                >
                   {number}
                 </a>
               </li>
             </>
           );
         })}
-      </ul>
-    </nav>
+      </PaginationItem>
+    </Pagination>
   );
 };

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
-// import { Container, Pagination, Stack, Link } from "@material-ui/core";
+import { Container } from "@material-ui/core";
+import { Pagination, Stack } from "@mui/material";
 import { Photos } from "../Photos/Photos";
-import { Pagination } from "../Pagination/Pagination";
+import { PageNumbers } from "../Pagination/PageNumbers";
 const BASE_URL = "http://jsonplaceholder.typicode.com/photos";
 
 function App() {
@@ -18,25 +19,35 @@ function App() {
   //change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  //
+  const pageQty = Math.ceil(photos.length / photosPerPage);
+
   useEffect(() => {
     axios.get(BASE_URL).then((res) => {
-      console.log(res.data);
       setIsLoading(true);
       setPhotos(res.data);
       setIsLoading(false);
     });
-  }, []);
+  }, [currentPage]);
 
   return (
-    <div className="container">
-      <h1 className="text-primary">My Photos</h1>
-      <Photos photos={currentPhotos} loading={loading} />
-      <Pagination
-        photosPerPage={photosPerPage}
-        totalPhotos={photos.length}
-        paginate={paginate}
-      />
-    </div>
+    <Container>
+      <Stack spacing={10}>
+        <h1 className="text-primary">My Photos</h1>
+        <Photos photos={currentPhotos} loading={loading} />
+        <Pagination
+          count={pageQty}
+          page={currentPage}
+          onChange={(_, num) => setCurrentPage(num)}
+        />
+
+        {/* <PageNumbers
+          photosPerPage={photosPerPage}
+          totalPhotos={photos.length}
+          paginate={paginate}
+        /> */}
+      </Stack>
+    </Container>
   );
 }
 
