@@ -31,14 +31,15 @@ function App() {
   }, [currentPage]);
 
   return (
-    <Container>
-      <Stack spacing={10}>
+    <Container >
+      <Stack spacing={10} sx={{ mb: 2 }}>
         <h1 className="text-primary">My Photos</h1>
         <Photos photos={currentPhotos} loading={loading} />
         <Pagination
           count={pageQty}
           page={currentPage}
           onChange={(_, num) => setCurrentPage(num)}
+          
         />
 
         {/* <PageNumbers

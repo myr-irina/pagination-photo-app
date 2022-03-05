@@ -13,7 +13,7 @@ export const Photos = ({ photos, loading }) => {
   }
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={3}>
       {photos.map((photo) => (
         <PhotoItem key={photo.id} photo={photo} />
       ))}
