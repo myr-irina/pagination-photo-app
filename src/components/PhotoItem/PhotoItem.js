@@ -14,16 +14,9 @@ import Box from "@mui/material/Box";
 
 const PhotoItem = ({ photo }) => {
   return (
-    <Grid item xs={12} md={4}>
-      <Card sx={{ maxWidth: 345, height: "100%" }} variant="outlined">
-        {/* <CardHeader
-          action={
-            <IconButton aria-label="delete" size="small"  sx={{zIndex: 'modal'}}>
-              <DeleteIcon fontSize="small" />
-            </IconButton>
-          }
-        /> */}
-        <Box sx={{ display: "flex", position: "relative", width: '100%' }}>
+    <Grid item xs={12} md={4} sx={{pdg: 5}}>
+      <Card sx={{ maxWidth: 345, height: "100%"}} variant="outlined">
+        <Box sx={{ display: "flex", position: "relative", width: "100%" }}>
           <CardMedia
             component="img"
             height="140"
@@ -35,13 +28,16 @@ const PhotoItem = ({ photo }) => {
           <IconButton
             aria-label="delete"
             size="small"
-            sx={{ position: "absolute", right: '0', left: '10' }}
+            sx={{ position: "absolute", right: "0", left: "10" }}
           >
             <DeleteIcon fontSize="small" />
           </IconButton>
         </Box>
 
         <CardContent>
+          <Typography variant="h8" component="h3" gutterBottom>
+            Album# {photo.albumId}
+          </Typography>
           <Typography variant="h6" component="h3" gutterBottom>
             {photo.title}
           </Typography>
