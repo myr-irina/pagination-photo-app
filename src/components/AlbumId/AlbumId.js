@@ -9,7 +9,7 @@ export const AlbumId = ({ photos }) => {
     .map((p) => p.albumId)
     .filter((albumId, index, photos) => photos.indexOf(albumId) === index);
     
-  console.log(uniqueAlbumId);
+
 
   return (
     <Grid container spacing={1}>

@@ -18,6 +18,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchAppBar from "../AppBar/AppBar";
 
 import { AlbumId } from "../AlbumId/AlbumId";
+import Popup from "../Popup/Popup";
 
 const BASE_URL = "http://jsonplaceholder.typicode.com/photos";
 
@@ -26,16 +27,29 @@ function App() {
   const [loading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [photosPerPage] = useState(10);
+  const [isVisible, setIsVisible] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState({
+    url: "",
+  });
 
   // get current posts
   const indexOfLastPhoto = currentPage * photosPerPage;
   const indexOfFirstPhoto = indexOfLastPhoto - photosPerPage;
   const currentPhotos = photos.slice(indexOfFirstPhoto, indexOfLastPhoto);
-  //change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  // //change page
+  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   //
   const pageQty = Math.ceil(photos.length / photosPerPage);
+
+  const handlePhotoClick = (photo) => {
+    setSelectedPhoto(photo);
+  };
+
+  const handleClose = () => {
+    setSelectedPhoto({ url: "" });
+  };
 
   useEffect(() => {
     axios.get(BASE_URL).then((res) => {
@@ -48,9 +62,13 @@ function App() {
   return (
     <>
       <Container sx={{ marginY: 5 }}>
-      {/* <AlbumId photos={photos}/> */}
+        {/* <AlbumId photos={photos}/> */}
         <Stack spacing={10} sx={{ my: 7, width: "100%" }}>
-          <Photos photos={currentPhotos} loading={loading} />
+          <Photos
+            photos={currentPhotos}
+            loading={loading}
+            onPhotoClick={handlePhotoClick}
+          />
           <Pagination
             count={pageQty}
             page={currentPage}
@@ -64,6 +82,10 @@ function App() {
         /> */}
         </Stack>
       </Container>
+      <Popup
+        onClose={handleClose}
+        selectedPhoto={selectedPhoto !== null && selectedPhoto}
+      />
     </>
   );
 }

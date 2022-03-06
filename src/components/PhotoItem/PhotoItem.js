@@ -12,12 +12,18 @@ import CardHeader from "@mui/material/CardHeader";
 import { positions } from "@mui/system";
 import Box from "@mui/material/Box";
 
-const PhotoItem = ({ photo }) => {
+const PhotoItem = ({ photo, onPhotoClick }) => {
+  
+  function handleClick() {
+    onPhotoClick(photo);
+  }
+
   return (
-    <Grid item xs={12} md={4} sx={{pdg: 5}}>
-      <Card sx={{ maxWidth: 345, height: "100%"}} variant="outlined">
+    <Grid item xs={12} md={4} sx={{ pdg: 5 }}>
+      <Card sx={{ maxWidth: 345, height: "100%" }} variant="outlined">
         <Box sx={{ display: "flex", position: "relative", width: "100%" }}>
           <CardMedia
+            onClick={handleClick}
             component="img"
             height="140"
             image={photo.thumbnailUrl}
