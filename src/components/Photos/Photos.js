@@ -3,7 +3,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { Grid } from "@material-ui/core";
 import PhotoItem from "../PhotoItem/PhotoItem";
 
-export const Photos = ({ photos, loading, onPhotoClick, onDeletePhoto }) => {
+export const Photos = ({ photos, loading, onPhotoClick, onDeletePhoto, filterPhoto }) => {
   if (loading) {
     return (
       <CircularProgress animation="border" role="status">
@@ -15,7 +15,7 @@ export const Photos = ({ photos, loading, onPhotoClick, onDeletePhoto }) => {
   return (
     <Grid container spacing={3}>
       {photos.map((photo) => (
-        <PhotoItem key={photo.id} photo={photo} onPhotoClick={onPhotoClick} onDeletePhoto={onDeletePhoto} />
+        <PhotoItem key={photo.id} photo={photo} onPhotoClick={onPhotoClick} onDeletePhoto={onDeletePhoto} filterPhoto={filterPhoto}/>
       ))}
     </Grid>
   );

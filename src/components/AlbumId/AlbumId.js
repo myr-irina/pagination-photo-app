@@ -1,19 +1,22 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
-import PhotoItem from "../PhotoItem/PhotoItem";
-import { Box, Card, Typography, Paper, Button } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Button } from "@mui/material";
+
 
 export const AlbumId = ({ photos }) => {
   const uniqueAlbumId = photos
     .map((p) => p.albumId)
     .filter((albumId, index, photos) => photos.indexOf(albumId) === index);
 
+  function clickHandler(e) {
+    console.log(e.target.value);
+  }
+
   return (
     <Grid container spacing={1}>
       {uniqueAlbumId.map((item, index) => (
         <Grid key={index} item xs={1}>
-          <Button size="small" variant="outlined">
+          <Button size="small" variant="outlined" onClick={clickHandler}>
             {item}
           </Button>
         </Grid>
