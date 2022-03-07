@@ -27,8 +27,7 @@ function App() {
   const [loading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [photosPerPage] = useState(10);
-  const [isVisible, setIsVisible] = useState(false);
-  const [open, setOpen] = useState(false);
+
   const [selectedPhoto, setSelectedPhoto] = useState({
     url: "",
   });
@@ -52,12 +51,29 @@ function App() {
   };
 
   useEffect(() => {
-    axios.get(BASE_URL).then((res) => {
-      setIsLoading(true);
-      setPhotos(res.data);
-      setIsLoading(false);
-    });
+    axios
+      .get(BASE_URL)
+      .then((res) => {
+        setIsLoading(true);
+        setPhotos(res.data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log("Невозможно получить данные с сервера", err);
+        setIsLoading(false);
+        setPhotos([]);
+      });
   }, [currentPage]);
+
+  function handleDeletePhoto(id) {
+    axios.delete(`${BASE_URL}/${id}`).then(() => {
+      console.log("DELETED!!!", id);
+      setPhotos((photos) => {
+        photos.filter((photo) => photo.id !== id);
+        console.log(photos);
+      });
+    });
+  }
 
   return (
     <>
@@ -68,18 +84,13 @@ function App() {
             photos={currentPhotos}
             loading={loading}
             onPhotoClick={handlePhotoClick}
+            onDeletePhoto={handleDeletePhoto}
           />
           <Pagination
             count={pageQty}
             page={currentPage}
             onChange={(_, num) => setCurrentPage(num)}
           />
-
-          {/* <PageNumbers
-          photosPerPage={photosPerPage}
-          totalPhotos={photos.length}
-          paginate={paginate}
-        /> */}
         </Stack>
       </Container>
       <Popup

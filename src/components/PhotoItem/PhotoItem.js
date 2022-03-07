@@ -12,10 +12,13 @@ import CardHeader from "@mui/material/CardHeader";
 import { positions } from "@mui/system";
 import Box from "@mui/material/Box";
 
-const PhotoItem = ({ photo, onPhotoClick }) => {
-  
+const PhotoItem = ({ photo, onPhotoClick, onDeletePhoto }) => {
   function handleClick() {
     onPhotoClick(photo);
+  }
+
+  function handleDelete() {
+    onDeletePhoto(photo.id)
   }
 
   return (
@@ -35,6 +38,7 @@ const PhotoItem = ({ photo, onPhotoClick }) => {
             aria-label="delete"
             size="small"
             sx={{ position: "absolute", right: "0", left: "10" }}
+            onClick={handleDelete}
           >
             <DeleteIcon fontSize="small" />
           </IconButton>
