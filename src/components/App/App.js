@@ -66,11 +66,13 @@ function App() {
   }, [currentPage]);
 
   function handleDeletePhoto(id) {
-    axios.delete(`${BASE_URL}/${id}`).then(() => {
+    axios.delete(`${BASE_URL}/${id}`).then((res) => {
       console.log("DELETED!!!", id);
+      console.log(res);
+      console.log(res.data);
+
       setPhotos((photos) => {
         photos.filter((photo) => photo.id !== id);
-        console.log(photos);
       });
     });
   }
@@ -78,7 +80,7 @@ function App() {
   return (
     <>
       <Container sx={{ marginY: 5 }}>
-        {/* <AlbumId photos={photos}/> */}
+        <AlbumId photos={photos}/>
         <Stack spacing={10} sx={{ my: 7, width: "100%" }}>
           <Photos
             photos={currentPhotos}

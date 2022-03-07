@@ -17,8 +17,9 @@ const PhotoItem = ({ photo, onPhotoClick, onDeletePhoto }) => {
     onPhotoClick(photo);
   }
 
-  function handleDelete() {
-    onDeletePhoto(photo.id)
+  function handleDelete(e) {
+    e.preventDefault();
+    onDeletePhoto(photo.id);
   }
 
   return (
