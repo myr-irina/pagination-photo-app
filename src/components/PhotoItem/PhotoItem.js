@@ -8,7 +8,9 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
 
+
 const PhotoItem = ({ photo, onPhotoClick, onDeletePhoto }) => {
+  
   function handleClick() {
     onPhotoClick(photo);
   }

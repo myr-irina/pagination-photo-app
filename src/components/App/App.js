@@ -5,7 +5,6 @@ import { Container } from "@material-ui/core";
 import { Pagination, Stack } from "@mui/material";
 import { Photos } from "../Photos/Photos";
 
-
 import { AlbumId } from "../AlbumId/AlbumId";
 import Popup from "../Popup/Popup";
 
@@ -16,7 +15,6 @@ function App() {
   const [loading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [photosPerPage] = useState(10);
-  const [filteredPhotos, setFilteredPhotos] = React.useState([]);
 
   const [selectedPhoto, setSelectedPhoto] = useState({
     url: "",
@@ -38,9 +36,10 @@ function App() {
     setSelectedPhoto({ url: "" });
   };
 
-  const filterPhoto = (e, photos) => {
-    const val = e.target.value;
-    photos.filter((photo) => photo.albumId === val);
+  const handleFilterAlbum = (item) => {
+    console.log(item);
+    const filteredItems = photos.filter((photo) => photo.albumId === item);
+    setPhotos(filteredItems);
   };
 
   useEffect(() => {
@@ -58,14 +57,9 @@ function App() {
       });
   }, [currentPage]);
 
-  function handleDeletePhoto(id, e) {
-    e.preventDefault();
-    console.log(e)
-
-    axios.delete(`${BASE_URL}/${id}`).then((res) => {
-      // console.log("DELETED!!!", id);
-      // console.log(res);
-      // console.log(res.data);
+  function handleDeletePhoto(id) {
+    axios.delete(`${BASE_URL}/${id}`).then(() => {
+      console.log("DELETED!!!", id);
 
       setPhotos((photos) => {
         photos.filter((photo) => photo.id !== id);
@@ -77,14 +71,13 @@ function App() {
     <>
       <Container sx={{ marginY: 5 }}>
         <h1 className="text-primary">My Photos</h1>
-        <AlbumId photos={photos} filteredPhotos={filteredPhotos} />
+        <AlbumId photos={photos} handleFilterAlbum={handleFilterAlbum} />
         <Stack spacing={10} sx={{ my: 7, width: "100%" }}>
           <Photos
             photos={currentPhotos}
             loading={loading}
             onPhotoClick={handlePhotoClick}
             onDeletePhoto={handleDeletePhoto}
-            filterPhoto={filterPhoto}
           />
           <Pagination
             count={pageQty}
