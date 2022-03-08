@@ -7,26 +7,19 @@ import { Photos } from "../Photos/Photos";
 
 import { AlbumId } from "../AlbumId/AlbumId";
 import Popup from "../Popup/Popup";
+import { PhotoAlbum } from "@material-ui/icons";
 
 const BASE_URL = "http://jsonplaceholder.typicode.com/photos";
+const PHOTOS_PER_PAGE = 10;
 
 function App() {
   const [photos, setPhotos] = useState([]);
   const [loading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [photosPerPage] = useState(10);
-
+  const [selectedAlbumId, setSelectedAlbumId] = useState(undefined);
   const [selectedPhoto, setSelectedPhoto] = useState({
     url: "",
   });
-
-  // get current posts
-  const indexOfLastPhoto = currentPage * photosPerPage;
-  const indexOfFirstPhoto = indexOfLastPhoto - photosPerPage;
-  const currentPhotos = photos.slice(indexOfFirstPhoto, indexOfLastPhoto);
-
-  //
-  const pageQty = Math.ceil(photos.length / photosPerPage);
 
   const handlePhotoClick = (photo) => {
     setSelectedPhoto(photo);
@@ -37,9 +30,9 @@ function App() {
   };
 
   const handleFilterAlbum = (item) => {
-    console.log(item);
-    const filteredItems = photos.filter((photo) => photo.albumId === item);
-    setPhotos(filteredItems);
+    const result = item === selectedAlbumId ? undefined : item;
+    setSelectedAlbumId(result);
+    setCurrentPage(1);
   };
 
   useEffect(() => {
@@ -55,35 +48,59 @@ function App() {
         setIsLoading(false);
         setPhotos([]);
       });
-  }, [currentPage]);
+  }, []);
 
   function handleDeletePhoto(id) {
     axios.delete(`${BASE_URL}/${id}`).then(() => {
       console.log("DELETED!!!", id);
 
-      setPhotos((photos) => {
-        photos.filter((photo) => photo.id !== id);
-      });
+      setPhotos(photos.filter((photo) => photo.id !== id));
     });
   }
+
+  // get current posts
+
+  const uniqueAlbumIds = photos
+    .map((p) => p.albumId)
+    .filter((albumId, index, photos) => photos.indexOf(albumId) === index);
+
+  const filteredPhotos = selectedAlbumId
+    ? photos.filter((photo) => photo.albumId === selectedAlbumId)
+    : photos;
+
+  const pageQty = Math.ceil(filteredPhotos.length / PHOTOS_PER_PAGE);
+
+  const indexOfLastPhoto = currentPage * PHOTOS_PER_PAGE;
+  const indexOfFirstPhoto = indexOfLastPhoto - PHOTOS_PER_PAGE;
+  const visiblePhotos = filteredPhotos.slice(
+    indexOfFirstPhoto,
+    indexOfLastPhoto
+  );
 
   return (
     <>
       <Container sx={{ marginY: 5 }}>
         <h1 className="text-primary">My Photos</h1>
-        <AlbumId photos={photos} handleFilterAlbum={handleFilterAlbum} />
+        <h2 className="text-primary">Filter albums:</h2>
+        <AlbumId
+          uniqueAlbumIds={uniqueAlbumIds}
+          handleFilterAlbum={handleFilterAlbum}
+          selectedAlbumId={selectedAlbumId}
+        />
         <Stack spacing={10} sx={{ my: 7, width: "100%" }}>
           <Photos
-            photos={currentPhotos}
+            photos={visiblePhotos}
             loading={loading}
             onPhotoClick={handlePhotoClick}
             onDeletePhoto={handleDeletePhoto}
           />
-          <Pagination
-            count={pageQty}
-            page={currentPage}
-            onChange={(_, num) => setCurrentPage(num)}
-          />
+          {pageQty > 1 && (
+            <Pagination
+              count={pageQty}
+              page={currentPage}
+              onChange={(_, num) => setCurrentPage(num)}
+            />
+          )}
         </Stack>
       </Container>
       <Popup

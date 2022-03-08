@@ -2,18 +2,15 @@ import React from "react";
 import { Grid } from "@material-ui/core";
 import { Button } from "@mui/material";
 
-export const AlbumId = ({ photos, handleFilterAlbum }) => {
-  const uniqueAlbumId = photos
-    .map((p) => p.albumId)
-    .filter((albumId, index, photos) => photos.indexOf(albumId) === index);
-
+export const AlbumId = ({ uniqueAlbumIds, handleFilterAlbum, selectedAlbumId }) => {
+ 
   return (
     <Grid container spacing={1}>
-      {uniqueAlbumId.map((item, index) => (
+      {uniqueAlbumIds.map((item, index) => (
         <Grid key={index} item xs={1}>
           <Button
             size="small"
-            variant="outlined"
+            variant={item === selectedAlbumId ? "contained" :"outlined"} 
             onClick={() => handleFilterAlbum(item)}
           >
             {item}
